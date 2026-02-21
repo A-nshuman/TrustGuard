@@ -1,5 +1,6 @@
 import { Images } from "../assets/images";
 import { HeartPulse } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
     return (
@@ -23,8 +24,8 @@ export default function Hero() {
                 </p>
 
                 <div className="relative group inline-block">
-                    <a
-                        href="#start"
+                    <Link
+                        to="/analyze"
                         className="heart-btn relative inline-flex items-center justify-center
                             px-6 py-3 rounded-md font-medium text-lg
                             bg-accent text-black
@@ -32,13 +33,14 @@ export default function Hero() {
                             transition-all duration-300
                             group-hover:bg-transparent
                             group-hover:text-accent
-                            overflow-hidden" >
+                            overflow-hidden"
+                                    >
                         Get Started
 
                         <span className="heart-icon">
                             <HeartPulse size={18} strokeWidth={2.2} />
                         </span>
-                    </a>
+                    </Link>
                 </div>
             </div>
         </section>
