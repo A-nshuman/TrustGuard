@@ -1,11 +1,23 @@
-import { useState } from 'react'
+import Navbar from "./components/Navbar";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-blue-600">
-        TrustGuard Dashboard
-      </h1>
+    <div className="min-h-screen bg-gray-900">
+
+      <Navbar />
+
+      <main className="max-w-7xl mx-auto px-6 py-16 text-center">
+
+        <h2 className="text-4xl font-bold mb-4 text-accent">
+          Welcome to TrustGuard
+        </h2>
+
+        <p className="text-gray-400 max-w-2xl mx-auto">
+          AI-powered healthcare fraud detection with transparency and trust.
+        </p>
+
+      </main>
+
     </div>
   );
 }
