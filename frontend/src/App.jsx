@@ -1,22 +1,31 @@
+import { Routes, Route } from "react-router-dom";
+
 import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import Footer from "./components/Footer";
+
+import Analyze from "./pages/Analyze";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-gray-900 flex flex-col">
 
       <Navbar />
 
-      <main className="max-w-7xl mx-auto px-6 py-16 text-center">
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Hero />
+              <Footer />
+            </>
+          }
+        />
 
-        <h2 className="text-4xl font-bold mb-4 text-accent">
-          Welcome to TrustGuard
-        </h2>
+        <Route path="/analyze" element={<Analyze />} />
 
-        <p className="text-gray-400 max-w-2xl mx-auto">
-          AI-powered healthcare fraud detection with transparency and trust.
-        </p>
-
-      </main>
+      </Routes>
 
     </div>
   );
