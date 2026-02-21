@@ -1,12 +1,13 @@
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-gray-900 flex flex-col">
 
       <Navbar />
 
-      <main className="max-w-7xl mx-auto px-6 py-16 text-center">
+      <main className="flex-grow max-w-7xl mx-auto px-6 py-16 text-center">
 
         <h2 className="text-4xl font-bold mb-4 text-accent">
           Welcome to TrustGuard
@@ -17,6 +18,8 @@ export default function App() {
         </p>
 
       </main>
+
+      <Footer />
 
     </div>
   );
