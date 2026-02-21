@@ -6,7 +6,19 @@ export default function Hero() {
     return (
         <section id="hero" className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gray-900">
 
-            <div className="absolute w-[500px] h-[500px] md:w-[650px] md:h-[650px] bg-accent opacity-20 blur-[120px] rounded-full" />
+            {/* Glow Behind Logo */}
+            <div
+                className="absolute w-[500px] h-[500px] md:w-[650px] md:h-[650px]
+             bg-accent opacity-25 blur-[140px] rounded-full"
+            />
+
+            {/* Background Logo */}
+            <img
+                src={Images.logo}
+                alt="TrustGuard Logo Background"
+                className="absolute w-[450px] md:w-[600px]
+             opacity-20 select-none pointer-events-none"
+            />
             <img
                 src={Images.logo}
                 alt="TrustGuard Logo Background"
@@ -34,7 +46,7 @@ export default function Hero() {
                             group-hover:bg-transparent
                             group-hover:text-accent
                             overflow-hidden"
-                                    >
+                    >
                         Get Started
 
                         <span className="heart-icon">
