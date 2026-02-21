@@ -1,4 +1,5 @@
 import { Images } from "../assets/images";
+import { HeartPulse } from "lucide-react";
 
 export default function Navbar() {
     return (
@@ -19,13 +20,29 @@ export default function Navbar() {
                     </h1>
                 </div>
 
-                <div>
+                {/* Right - About (Lucide Heart Effect) */}
+                <div className="relative group">
+
                     <a
                         href="#about"
-                        className="bg-accent text-black px-4 py-2 rounded"
+                        className="heart-btn relative inline-flex items-center justify-center
+               px-4 py-2 rounded-md font-medium
+               bg-accent text-black
+               border border-accent
+               transition-all duration-300
+               group-hover:bg-transparent
+               group-hover:text-accent
+               overflow-hidden"
                     >
                         About Us
+
+                        {/* Heart Icon */}
+                        <span className="heart-icon">
+                            <HeartPulse size={16} strokeWidth={2.2} />
+                        </span>
+
                     </a>
+
                 </div>
 
             </div>
