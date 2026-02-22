@@ -2,8 +2,8 @@ fastapi
 uvicorn
 pandas
 numpy
-scikit-learn
+scikit-learn==1.7.2
 shap
 joblib
 python-multipart
-dot-env
+python-dotenv
