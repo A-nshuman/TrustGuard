@@ -4,9 +4,9 @@ import joblib
 import pandas as pd
 import shap
 import numpy as np
-import requests
 import json
 import os
+import google.generativeai as genai
 
 from utils.rule_engine import rule_engine
 from pydantic import BaseModel
@@ -18,9 +18,10 @@ from dotenv import load_dotenv
 # -----------------------------
 load_dotenv()
 
-MEGALLM_API_KEY = os.getenv("MEGALLM_API_KEY")
-print("KEY:", MEGALLM_API_KEY)
-MEGALLM_URL = "https://ai.megallm.io/v1/chat/completions"
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
+if GEMINI_API_KEY:
+    genai.configure(api_key=GEMINI_API_KEY)
 
 # -----------------------------
 # Initialize FastAPI
@@ -50,31 +51,33 @@ background = np.zeros((1, len(feature_names)))
 explainer = shap.LinearExplainer(lr_model, background)
 
 # -----------------------------
-# Optional: Load Peer Stats
+# Load Peer Stats
 # -----------------------------
 try:
     with open("peer_stats.json") as f:
         peer_stats = json.load(f)
-        print("Peer stats loaded:", peer_stats)
 except Exception:
     peer_stats = {}
 
 # -----------------------------
-# LLM Service
+# LLM Service (Gemini)
 # -----------------------------
 def generate_llm_summary(decision, risk_score, top_drivers):
 
-    if not MEGALLM_API_KEY:
+    if not GEMINI_API_KEY:
         return None
 
     prompt = f"""
-    You are a healthcare fraud auditor.
+    You are a healthcare fraud audit AI.
 
     Risk Level: {decision}
     Risk Score: {risk_score}
 
     Top Risk Drivers:
     {top_drivers}
+
+    Respond in plain text only.
+    Do NOT use markdown, bold formatting, or special characters.
 
     Provide:
     - Brief professional explanation (3-4 lines)
@@ -83,23 +86,13 @@ def generate_llm_summary(decision, risk_score, top_drivers):
     """
 
     try:
-        response = requests.post(
-            MEGALLM_URL,
-            headers={
-                "Authorization": f"Bearer {MEGALLM_API_KEY}",
-                "Content-Type": "application/json"
-            },
-            json={
-                "model": "mega-llm-pro",
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0.3
-            }
-        )
-
-        data = response.json()
-        return data["choices"][0]["message"]["content"]
-
-    except Exception:
+        model_llm = genai.GenerativeModel("models/gemini-2.5-flash")
+        response = model_llm.generate_content(prompt)
+        print("Gemini raw response:", response)
+        print("Gemini text:", response.text)
+        return response.text
+    except Exception as e:
+        print("Gemini error:", str(e))
         return None
 
 
@@ -142,16 +135,11 @@ def predict(data: ProviderFeatures) -> Dict[str, Any]:
     # 1️⃣ RULE ENGINE
     # -------------------------
     rule_result = rule_engine(df.iloc[0])
+    rule_override = None
 
-    if rule_result != "PASS":
-        return {
-            "decision": rule_result,
-            "risk_score": 1.0,
-            "source": "RULE_ENGINE",
-            "rule_triggered": rule_result,
-            "top_risk_drivers": [["Rule Triggered", 20]],
-            "llm_explanation": None
-        }
+    # Only override if CRITICAL
+    if isinstance(rule_result, str) and rule_result.startswith("CRITICAL"):
+        rule_override = rule_result
 
     # -------------------------
     # 2️⃣ ML LAYER
@@ -226,18 +214,19 @@ def predict(data: ProviderFeatures) -> Dict[str, Any]:
         }
 
     # -------------------------
-    # 6️⃣ LLM Summary (Only if needed)
+    # 6️⃣ LLM Summary
     # -------------------------
     llm_summary = generate_llm_summary(
-    decision,
-    float(risk_score),
-    sorted_shap[:5]
-)
+        decision,
+        float(risk_score),
+        sorted_shap[:5]
+    )
+
     # -------------------------
     # Final Response
     # -------------------------
     return {
-        "decision": decision,
+        "decision": rule_override if rule_override else decision,
         "risk_score": float(risk_score),
         "source": "ML_MODEL",
 
@@ -248,5 +237,8 @@ def predict(data: ProviderFeatures) -> Dict[str, Any]:
         "top_risk_drivers": sorted_shap[:3],
 
         "peer_comparison": peer_comparison,
-        "llm_explanation": llm_summary
+        "llm_explanation": llm_summary,
+        "rule_flag": rule_result if rule_result != "PASS" else None,
+
+        "original_input": data.model_dump()
     }

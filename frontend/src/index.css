@@ -197,3 +197,23 @@ html {
         stroke-dashoffset: 0;
     }
 }
+
+@keyframes downloadFloat {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 0) scale(0.6);
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -40px) scale(1.1);
+    }
+}
+
+.animate-downloadFloat {
+    animation: downloadFloat 0.7s ease-out forwards;
+}

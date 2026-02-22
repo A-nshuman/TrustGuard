@@ -50,7 +50,7 @@ export default function Navbar() {
                             transition-all duration-300
                             group-hover:bg-transparent
                             group-hover:text-accent
-                            overflow-hidden">
+                            overflow-hidden cursor-pointer">
                         About Us
 
                         <span className="heart-icon">
