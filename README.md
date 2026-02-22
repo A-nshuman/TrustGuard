@@ -267,6 +267,20 @@ This project satisfies:
 
 ---
 
+## 📸 Screenshots
+
+### Hero Page
+![TrustGuard Hero](docs/ss_hero.png)
+
+### Analysis input page
+![TrustGuard Inputs](docs/ss_analysis_inp.jpeg)
+
+### Analysis outputs
+![TrustGuard Output_1](docs/ss_analysis_op_1.jpeg)
+![TrustGuard Output_2](docs/ss_analysis_op_2.jpeg)
+
+---
+
 ## 📜 License
 
 This project is intended for **educational and hackathon purposes only**.
