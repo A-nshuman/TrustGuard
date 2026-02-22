@@ -7,7 +7,7 @@ import numpy as np
 import json
 import os
 import google.generativeai as genai
-
+import uvicorn
 from utils.rule_engine import rule_engine
 from pydantic import BaseModel
 from typing import Dict, Any
@@ -242,3 +242,6 @@ def predict(data: ProviderFeatures) -> Dict[str, Any]:
 
         "original_input": data.model_dump()
     }
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)
