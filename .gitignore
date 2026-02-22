@@ -33,7 +33,6 @@ pip-delete-this-directory.txt
 .ipynb_checkpoints/
 
 # Model Files
-*.pkl
 *.joblib
 *.h5
 *.pt
