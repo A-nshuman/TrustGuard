@@ -80,7 +80,8 @@ export default function AboutModal({ isOpen, onClose }) {
                             key={name}
                             className="bg-gray-800 rounded-lg p-4 text-center
                          transition hover:border-accent
-                         border border-gray-700"
+                         border border-gray-700 hover:shadow-[0_0_30px_#65B15630]
+                         hover:-translate-y-1 hover:cursor-pointer"
                         >
                             <h3 className="text-accent font-semibold">
                                 {name}
@@ -96,7 +97,7 @@ export default function AboutModal({ isOpen, onClose }) {
 
                 {/* Footer Snake Tag */}
                 <p className="mt-6 text-center text-sm text-gray-500">
-                    🐍 Slytherin Team • Precision • Intelligence • Trust
+                    🐍 Team Slytherin 🐍
                 </p>
 
             </div>
